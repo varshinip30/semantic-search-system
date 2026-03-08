@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Semantic Search System</title>
+
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#eef2f3,#dfe9f3);
+    margin:0;
+    padding:0;
+}
+
+.container{
+    width:700px;
+    margin:80px auto;
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#2c3e50;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:30px;
+}
+
+.examples{
+    background:#f6f8fa;
+    padding:15px;
+    border-radius:6px;
+    margin-bottom:25px;
+}
+
+.examples li{
+    margin:5px 0;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    font-size:16px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+button{
+    padding:12px 20px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#43a047;
+}
+
+#loading{
+    margin-top:15px;
+    color:#888;
+}
+
+.result-card{
+    margin-top:30px;
+    background:#fafafa;
+    padding:20px;
+    border-radius:6px;
+    border:1px solid #e0e0e0;
+}
+
+pre{
+    white-space:pre-wrap;
+    font-family:Consolas, monospace;
+}
+
+.result-box {
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+    background:#f5f5f5;
+}
+
+.cache-hit {
+    color: green;
+    font-weight: bold;
+}
+
+.vector-search {
+    color: blue;
+    font-weight: bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Semantic Search System</h1>
+<p class="subtitle">Search documents using AI embeddings</p>
+
+<div class="examples">
+
+<b>Example queries</b>
+
+<ul>
+<li>Climate change</li>
+<li>Hockey team</li>
+<li>Space shuttle</li>
+</ul>
+
+</div>
+
+<div class="search-box">
+
+<input id="queryInput" type="text" placeholder="Enter your query">
+
+<button onclick="search()">Search</button>
+
+</div>
+
+<p id="loading"></p>
+
+<div class="result-card">
+
+<h3>Result</h3>
+
+<div id="resultBox" class="result-box"></div>
+
+</div>
+
+</div>
+
+<script>
+
+async function search() {
+
+const query = document.getElementById("queryInput").value;
+
+document.getElementById("loading").innerText = "Searching...";
+
+const response = await fetch("/query", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({query: query})
+});
+
+const data = await response.json();
+
+document.getElementById("loading").innerText = "";
+
+let source = data.cache_hit
+    ? "<span class='cache-hit'>Cache</span>"
+    : "<span class='vector-search'>Vector Search</span>";
+
+let output =
+"Query: " + data.query + "\n\n" +
+"Source: " + source + "\n\n";
+
+if (data.cache_hit) {
+
+output +=
+"Matched Query: " + data.matched_query + "\n\n" +
+"Similarity Score: " + data.similarity_score.toFixed(3) + "\n\n";
+
+}
+
+output +=
+"Result: " + data.result + "\n\n" +
+"Cluster: " + data.dominant_cluster;
+
+document.getElementById("resultBox").innerHTML = output.replace(/\n/g,"<br>");
+}
+
+</script>
+
+</body>
+
+</html>
