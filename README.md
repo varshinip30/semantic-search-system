@@ -1,10 +1,10 @@
-#Semantic Search System with Fuzzy Clustering and Semantic Cache
+Semantic Search System with Fuzzy Clustering and Semantic Cache
 
-##Overview
+Overview
 
 A lightweight semantic search system for the 20 Newsgroups dataset (~20,000 news posts, 20 categories).
 
-##Core Components:
+Core Components:
 
 Fuzzy Clustering → soft document membership across clusters
 
@@ -12,8 +12,8 @@ Semantic Cache → avoids redundant computation for similar queries
 
 FastAPI Service → live API with query handling and cache management
 
-##Project Structure
-###semantic-search-system
+Project Structure
+semantic-search-system
 ├── main.py
 ├── requirements.txt
 ├── Dockerfile
@@ -22,12 +22,12 @@ FastAPI Service → live API with query handling and cache management
 └── clustering/fuzzy_cluster.py
 Installation & Running
 
-##Clone the repository:
+Clone the repository:
 
 git clone <repository-url>
 cd semantic-search-system
 
-##Install dependencies:
+Install dependencies:
 
 pip install -r requirements.txt
 
@@ -37,7 +37,7 @@ uvicorn main:app --reload
 
 Open in browser: http://127.0.0.1:8000
 
-##Docker 
+Docker 
 
 docker build -t semantic-search .
 docker run -p 8000:8000 semantic-search
@@ -46,13 +46,13 @@ POST /query
 
 Checks semantic cache and returns results for a query.
 
-##Example request:
+Example request:
 
 {
   "query": "machine learning techniques"
 }
 
-##Example response:
+Example response:
 
 {
   "query": "machine learning techniques",
@@ -76,7 +76,7 @@ DELETE /cache
 
 Flushes cache and resets stats.
 
-##Features
+Features
 
 Semantic search using sentence embeddings
 
@@ -90,7 +90,7 @@ FastAPI backend + simple web UI
 
 Optional Docker containerization
 
-##Notes
+Notes
 
 Dataset preprocessing and embedding choices are handled in main.py.
 
